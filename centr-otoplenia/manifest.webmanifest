@@ -1,0 +1,19 @@
+{
+  "name": "Центр отопления — электроотопление в Гродно",
+  "short_name": "Центр отопления",
+  "description": "Монтаж электроотопления под ключ в Гродно и Гродненской области: расчёт, монтаж за 1–2 дня, документы и пониженный тариф.",
+  "lang": "ru-BY",
+  "start_url": "/centr-otoplenia/",
+  "scope": "/centr-otoplenia/",
+  "display": "browser",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/centr-otoplenia/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

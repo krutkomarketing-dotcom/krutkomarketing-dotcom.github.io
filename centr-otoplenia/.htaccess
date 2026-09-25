@@ -1,0 +1,91 @@
+# =============================================================================
+#  centr-otoplenia.by — конфигурация Apache
+#  Домен работает с 2023 года, поэтому 301-редиректы со старых адресов
+#  обязательны: они переносят накопленный вес страниц на новые URL.
+# =============================================================================
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # --- 1. Только HTTPS ------------------------------------------------------
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+  # --- 2. Без www (основное зеркало — centr-otoplenia.by) -------------------
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+
+  # --- 3. 301 со старых адресов Tilda --------------------------------------
+  # /electro         — была страница про электроотопление → теперь это главная
+  # /otp             — общий монтаж отопления → хаб услуг
+  # /watersupply     — горячее водоснабжение → соответствующая услуга
+  # /heatingsources  — «что выбрать источником тепла» → страница сравнения
+  RewriteRule ^electro/?$ / [R=301,L]
+  RewriteRule ^otp/?$ /uslugi/ [R=301,L]
+  RewriteRule ^watersupply/?$ /uslugi/goryachee-vodosnabzhenie/ [R=301,L]
+  RewriteRule ^heatingsources/?$ /istochniki-tepla/ [R=301,L]
+
+  # Служебные адреса Tilda, если где-то остались внешние ссылки
+  RewriteRule ^tilda/ / [R=301,L]
+
+  # --- 4. Единообразие URL: слеш на конце ----------------------------------
+  # Astro генерирует папки с index.html, поэтому канонический вид — со слешем.
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_URI} !\.(html|xml|txt|json|js|css|svg|png|jpg|jpeg|webp|avif|ico|woff2?|php)$
+  RewriteCond %{REQUEST_URI} !/$
+  RewriteRule ^(.*)$ /$1/ [R=301,L]
+</IfModule>
+
+<IfModule mod_dir.c>
+  DirectoryIndex index.html index.php
+</IfModule>
+
+# --- Страница 404 -----------------------------------------------------------
+ErrorDocument 404 /404.html
+
+# --- Сжатие -----------------------------------------------------------------
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml
+  AddOutputFilterByType DEFLATE application/javascript application/json
+  AddOutputFilterByType DEFLATE application/xml application/rss+xml
+  AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# --- Кеширование ------------------------------------------------------------
+<IfModule mod_expires.c>
+  ExpiresActive On
+
+  # Файлы Astro содержат хеш в имени — можно кешировать навсегда
+  <FilesMatch "\.(js|css)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  ExpiresByType image/webp                "access plus 6 months"
+  ExpiresByType image/avif                "access plus 6 months"
+  ExpiresByType image/jpeg                "access plus 6 months"
+  ExpiresByType image/png                 "access plus 6 months"
+  ExpiresByType image/svg+xml             "access plus 6 months"
+  ExpiresByType font/woff2                "access plus 1 year"
+
+  # HTML не кешируем: содержимое обновляется при каждой пересборке
+  ExpiresByType text/html                 "access plus 0 seconds"
+</IfModule>
+
+# --- Заголовки безопасности -------------------------------------------------
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+
+  # Конфиг с токеном бота не должен быть доступен снаружи
+  <FilesMatch "config\.php$">
+    Require all denied
+  </FilesMatch>
+</IfModule>
+
+# --- Кодировка --------------------------------------------------------------
+AddDefaultCharset UTF-8

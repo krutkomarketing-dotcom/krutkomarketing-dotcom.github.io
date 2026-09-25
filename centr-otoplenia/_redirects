@@ -1,0 +1,14 @@
+# Настоящие 301 со старых Tilda-адресов (у домена ~2 года истории).
+#
+# Формат понимают Cloudflare Pages и Netlify — файл просто уезжает в корень
+# сборки. Apache берёт то же самое из public/.htaccess, nginx —
+# из deploy/nginx-redirects.conf.
+#
+# Зачем отдельно от astro.config.mjs: тамошние redirects генерируют страницу
+# с <meta http-equiv="refresh"> и кодом 200. Браузер по ней перейдёт, но вес
+# старого адреса поисковику не передаётся — для этого нужен именно 301.
+
+/electro          /                                    301
+/otp              /uslugi/                             301
+/watersupply      /uslugi/goryachee-vodosnabzhenie/    301
+/heatingsources   /istochniki-tepla/                   301

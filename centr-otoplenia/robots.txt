@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+
+# Служебные страницы и обработчики в индекс не нужны
+Disallow: /spasibo/
+Disallow: /api/
+Disallow: /politika-konfidencialnosti/
+
+# Не даём индексировать параметры разметки трафика — плодит дубли
+Disallow: /*?utm_
+Disallow: /*?yclid=
+Disallow: /*?gclid=
+Disallow: /*?fbclid=
+
+Sitemap: https://centr-otoplenia.by/sitemap-index.xml

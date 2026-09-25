@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#ffffff"/>
+
+  <!-- Тёплая полоса слева: фирменный акцент -->
+  <rect x="0" y="0" width="18" height="630" fill="#d1440d"/>
+
+  <!-- Знак -->
+  <g transform="translate(72, 62)">
+    <path d="M40 2 74 21.5v39L40 80 6 60.5v-39L40 2Z" fill="#fdece3" stroke="#d1440d" stroke-width="4"/>
+    <path d="M40 22c6.5 7.2 10.8 11.8 10.8 18.8A10.8 10.8 0 0 1 40 51.6a10.8 10.8 0 0 1-10.8-10.8C29.2 33.8 33.5 29.2 40 22Z" fill="#d1440d"/>
+  </g>
+
+  <text x="176" y="96" font-family="Segoe UI, Arial, sans-serif" font-size="34" font-weight="700" fill="#16212c">Центр отопления</text>
+  <text x="176" y="130" font-family="Segoe UI, Arial, sans-serif" font-size="24" fill="#566878">электроотопление в Гродно и области</text>
+
+  <!-- Заголовок -->
+  <text x="72" y="272" font-family="Segoe UI, Arial, sans-serif" font-size="72" font-weight="700" fill="#16212c">Электроотопление</text>
+  <text x="72" y="352" font-family="Segoe UI, Arial, sans-serif" font-size="72" font-weight="700" fill="#16212c">в Гродно <tspan fill="#d1440d">под ключ</tspan></text>
+
+  <!-- Подзаголовок -->
+  <text x="72" y="418" font-family="Segoe UI, Arial, sans-serif" font-size="30" fill="#33475a">Монтаж за 1–2 дня · документы и пониженный тариф</text>
+
+  <!-- Плашки-факты -->
+  <g font-family="Segoe UI, Arial, sans-serif">
+    <rect x="72" y="462" width="238" height="72" rx="12" fill="#f4f7fa" stroke="#d5dee6" stroke-width="2"/>
+    <text x="96" y="497" font-size="34" font-weight="700" fill="#d1440d">900+</text>
+    <text x="96" y="521" font-size="19" fill="#566878">домов с 2014 года</text>
+
+    <rect x="330" y="462" width="238" height="72" rx="12" fill="#f4f7fa" stroke="#d5dee6" stroke-width="2"/>
+    <text x="354" y="497" font-size="34" font-weight="700" fill="#d1440d">5 лет</text>
+    <text x="354" y="521" font-size="19" fill="#566878">гарантия по договору</text>
+
+    <rect x="588" y="462" width="272" height="72" rx="12" fill="#f4f7fa" stroke="#d5dee6" stroke-width="2"/>
+    <text x="612" y="497" font-size="34" font-weight="700" fill="#d1440d">Бесплатно</text>
+    <text x="612" y="521" font-size="19" fill="#566878">замер и расчёт сметы</text>
+  </g>
+
+  <!-- Телефон -->
+  <g transform="translate(880, 168)">
+    <rect x="0" y="0" width="248" height="112" rx="16" fill="#d1440d"/>
+    <text x="124" y="46" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="19" fill="#ffe7db">Позвоните нам</text>
+    <text x="124" y="82" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="27" font-weight="700" fill="#ffffff">+375 44 722-51-52</text>
+  </g>
+</svg>
