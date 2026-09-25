@@ -151,7 +151,7 @@ span:has(> time) > * {
    из data-label (проставляет tools/table-labels.py). */
 @media (max-width: 639.98px) {
   .table-wrap {
-    overflow: visible;
+    overflow: hidden;
   }
   .table-wrap table,
   .prose-co table {
@@ -250,5 +250,152 @@ span:has(> time) > * {
   }
   main .btn > svg:first-child {
     display: none;
+  }
+}
+
+/* --- Единый ритм на телефоне ---------------------------------------------------
+   Карточки были с отступом то 1rem, то 1.25rem — текст соседних карточек
+   начинался на разном расстоянии от края. Теперь один отступ. */
+@media (max-width: 639.98px) {
+  .card.p-4,
+  .card.p-5 {
+    padding: 1.125rem;
+  }
+}
+
+/* --- Единая типографика на телефоне ---------------------------------------------
+   Читаемый текст (подзаголовки секций, абзацы, статьи блога) был 19 / 21 / 21.4px
+   вперемешку. На телефоне — один размер 1.0625rem (19px), десктоп как был.
+   Размеры в классах сведены к шкале скриптом tools/normalize-type.py. */
+@media (max-width: 639.98px) {
+  :root {
+    --text-lead: 1.0625rem;
+    --text-lead--line-height: 1.6;
+    /* H2 секций был равен H1 (33.75px) — иерархии не было видно. */
+    --text-h2: 1.625rem;
+    --text-h3: 1.3125rem;
+  }
+  /* H1 внутренних страниц размечен тем же классом text-h2 — оставляем ему прежний размер. */
+  h1.text-h2 {
+    font-size: 1.875rem;
+    line-height: 1.12;
+  }
+  /* H1 главной был меньше H1 внутренних страниц и почти равен H2. */
+  .home-hero__title {
+    font-size: clamp(1.45rem, 8.4vw, 1.875rem);
+  }
+  .prose-co {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+  }
+  .prose-co h2 {
+    font-size: 1.4375rem;
+  }
+  .prose-co h3 {
+    font-size: 1.1875rem;
+  }
+}
+
+/* --- Полировка по impeccable (detect + reference/layout, typeset, polish) ------ */
+
+/* Карточки: тонкая рамка + широкая размытая тень одновременно давали «мыльный»
+   край. Оставляем чёткую рамку и едва заметную тень; большая тень — только
+   при наведении (card-hover), как отклик на действие. */
+:root {
+  --shadow-card: 0 1px 2px #16212c0d;
+}
+
+/* Дисклеймер в футере был почти невидим (opacity 70% поверх muted: 1.6:1). */
+footer .opacity-70 {
+  opacity: 1;
+  color: var(--color-muted);
+}
+
+.home-quick-lead__title {
+  line-height: 1.3;
+}
+
+/* Телефон: один шаблон карточки «иконка + заголовок».
+   У карточек услуг иконка уже стоит слева от заголовка, а у «Частный дом /
+   Дача / Коттедж», факторов цены и т.п. — над ним: два разных шаблона
+   рядом, плюс лишняя высота. Приводим к одному: иконка слева, по центру
+   первой строки заголовка. */
+@media (max-width: 639.98px) {
+  .card:has(> span.place-items-center:first-child + h3) {
+    display: grid;
+    grid-template-columns: 2.75rem minmax(0, 1fr);
+    column-gap: 0.875rem;
+    align-items: center;
+    align-content: start;
+  }
+  .card:has(> span.place-items-center:first-child + h3) > * {
+    grid-column: 1 / -1;
+  }
+  .card:has(> span.place-items-center:first-child + h3) > span.place-items-center:first-child {
+    grid-column: 1;
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+  .card:has(> span.place-items-center:first-child + h3) > span.place-items-center:first-child + h3 {
+    grid-column: 2;
+    margin-top: 0;
+  }
+}
+
+/* Заголовки карточек на телефоне были трёх размеров (23.6 / 20.3 / 19.1px) —
+   один размер для одной роли. */
+@media (max-width: 639.98px) {
+  main .card h3,
+  main .card > span > span.font-bold.sm\:hidden {
+    font-size: 1.125rem;
+    line-height: 1.3;
+  }
+  main .card > span.place-items-center:first-child + h3 + p {
+    margin-top: 0.625rem;
+  }
+}
+
+/* Висячий отступ: «иконка + заголовок», под ним абзац, выровненный по тексту
+   заголовка. Отступы абзацев (pl-6 / pl-7) были подобраны на глаз и не
+   совпадали с «ширина иконки + зазор» — текст абзаца стоял на 3–5px левее
+   или правее текста заголовка. Теперь ровно по нему. */
+.flex.gap-2\.5:has(> span:first-child > svg[width="17"]) + .pl-7 {
+  padding-left: calc(17px + 0.625rem);
+}
+.flex.gap-2\.5:has(> span:first-child > svg[width="16"]) + .pl-7 {
+  padding-left: calc(16px + 0.625rem);
+}
+.flex.gap-2:has(> span:first-child > svg[width="15"]) + .pl-6 {
+  padding-left: calc(15px + 0.5rem);
+}
+.flex.gap-4:has(> span:first-child > svg[width="14"]) + .pl-6 {
+  padding-left: calc(14px + 1rem);
+}
+
+/* Оглавление статей: номера «1.»…«10.» разной ширины сдвигали начало
+   пунктов на 1–3px. Номерам — одинаковая колонка. */
+ol > li.flex > span.font-bold:first-child {
+  flex-shrink: 0;
+  min-width: 1.75em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Иконки в строке с текстом не должны сжиматься: у длинных заголовков svg 17px
+   ужималась до 8–12px, и текст каждого заголовка начинался в своём месте. */
+.flex > span:has(> svg:only-child),
+.flex > svg {
+  flex-shrink: 0;
+}
+
+/* Длина строки на десктопе: абзацы на всю ширину контейнера давали 110–160
+   знаков в строке (комфортно — до ~75). В слое base, чтобы не перебивать
+   ширины, уже заданные классами (max-w-*, .home-hero__claim и т.п.). */
+@layer base {
+  main p {
+    max-width: 75ch;
+  }
+  main .text-center p,
+  main p.text-center {
+    margin-inline: auto;
   }
 }
