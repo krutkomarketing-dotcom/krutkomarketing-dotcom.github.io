@@ -76,14 +76,28 @@ a.card[href^="tel:"] {
 a.card[href^="tel:"] .font-bold {
   white-space: nowrap;
 }
-/* На телефоне иконка над текстом: номеру остаётся вся ширина карточки. */
+/* На телефоне: иконка и «Позвоните нам» в одну строку (как у остальных
+   карточек), номер крупно на всю ширину карточки под ними. */
 @media (max-width: 639.98px) {
-  a.card[href^="tel:"] {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.875rem;
+  main a.card[href^="tel:"] {
+    display: grid;
+    grid-template-columns: 2.75rem minmax(0, 1fr);
+    column-gap: 0.875rem;
+    row-gap: 0.25rem;
+    align-items: center;
   }
-  a.card[href^="tel:"] .font-bold {
+  main a.card[href^="tel:"] > span:first-child {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+  main a.card[href^="tel:"] > span:last-child {
+    display: contents;
+  }
+  main a.card[href^="tel:"] > span:last-child > span:not(:first-child) {
+    grid-column: 1 / -1;
+  }
+  main a.card[href^="tel:"] > span:last-child > span.font-bold {
+    margin-top: 0.5rem;
     font-size: clamp(1.375rem, 7.4vw, 1.75rem);
   }
 }
@@ -391,11 +405,105 @@ ol > li.flex > span.font-bold:first-child {
    знаков в строке (комфортно — до ~75). В слое base, чтобы не перебивать
    ширины, уже заданные классами (max-w-*, .home-hero__claim и т.п.). */
 @layer base {
+  /* ch в Golos уже среднего знака: 66ch ≈ 80 знаков русского текста. */
   main p {
-    max-width: 75ch;
+    max-width: 66ch;
   }
   main .text-center p,
   main p.text-center {
     margin-inline: auto;
   }
+}
+
+/* --- Первый экран под рекламу ---------------------------------------------------
+   На телефоне кнопка «Бесплатный замер» была ниже первого экрана (800–950px):
+   сначала фото, потом длинный абзац. Теперь: заголовок → оффер → кнопки →
+   выгоды → фото. Выгоды (расчёт, компенсация, ЭФИ) — списком, а не абзацем. */
+@media (max-width: 639.98px) {
+  .home-hero__grid {
+    grid-template-areas: "title" "claim" "body" "media";
+  }
+}
+@media (min-width: 640px) and (max-width: 1023.98px) {
+  .home-hero__grid {
+    grid-template-areas: "loc" "title" "claim" "body" "media";
+  }
+}
+@media (max-width: 1023.98px) {
+  .home-hero__media {
+    margin-top: 0.5rem;
+  }
+  .home-hero__actions {
+    margin-block-start: 1.125rem;
+  }
+  .home-hero__checks {
+    margin-block-start: 1.25rem;
+  }
+}
+/* Выгоды длиннее прежних «Сначала расчёт» — переносятся и идут столбиком. */
+.home-hero__checks b {
+  white-space: normal;
+}
+@media (min-width: 700px) and (max-width: 1023.98px) {
+  .home-hero__checks {
+    display: grid;
+  }
+}
+
+/* --- Подписи над заголовками ---------------------------------------------------------
+   Капс с разрядкой над каждым заголовком («ГЛАВНОЕ ПРО ДЕНЬГИ») — самый частый
+   признак шаблонной вёрстки и хуже читается. Оставляем подпись как тихую
+   рубрику в цвете бренда, обычным регистром. Над H1 она повторяла «хлебные
+   крошки» («Контакты» → «Как с нами связаться») — там убираем. */
+main p.uppercase.text-heat-300 {
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+main p.uppercase.text-heat-300:has(+ h1) {
+  display: none;
+}
+/* Заголовки колонок футера — тоже без капса. */
+footer p.uppercase {
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+/* --- Без «выплывания» блоков при прокрутке ---------------------------------------
+   Каждая секция появлялась из прозрачности со сдвигом — шаблонный эффект, а
+   пока скрипт не отработал, текст невидим. Контент виден сразу. */
+.reveal,
+.reveal.is-in {
+  opacity: 1;
+  translate: none;
+  transition: none;
+}
+
+/* --- Шапка на 1024–1279px ------------------------------------------------------------
+   Логотип + 7 пунктов меню + кнопка не помещались: кнопка «Бесплатный
+   расчёт» уезжала за край на ~50px (iPad в альбомной, небольшие ноутбуки).
+   Ужимаем отступы пунктов и прячем подпись под логотипом. */
+@media (min-width: 1024px) and (max-width: 1279.98px) {
+  header nav .whitespace-nowrap.px-2\.5 {
+    padding-inline: 0.4375rem;
+    font-size: 0.875rem;
+  }
+  header a[aria-label^="Центр отопления"] .text-muted {
+    display: none;
+  }
+}
+
+/* Плашка на оранжевой панели: полупрозрачный белый поверх оранжевого давал
+   светлый фон, белый текст на нём — 3.7:1. Затемняем: контраст > 5:1. */
+.panel-heat p.rounded-full.border {
+  background-color: rgb(0 0 0 / 0.16);
+}
+
+/* Подписи в сравнении «дрова / конвекторы» в две строки — чуть свободнее. */
+main p.flex.font-bold.leading-tight {
+  line-height: 1.3;
 }
