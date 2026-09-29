@@ -12,3 +12,5 @@
 /otp              /uslugi/                             301
 /watersupply      /uslugi/goryachee-vodosnabzhenie/    301
 /heatingsources   /istochniki-tepla/                   301
+/uslugi/elektricheskiy-teplyy-pol   /uslugi/   301
+/uslugi/elektricheskiy-teplyy-pol/  /uslugi/   301
