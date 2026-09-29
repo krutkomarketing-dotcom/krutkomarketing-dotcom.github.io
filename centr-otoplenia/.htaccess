@@ -26,6 +26,7 @@
   RewriteRule ^watersupply/?$ /uslugi/goryachee-vodosnabzhenie/ [R=301,L]
   RewriteRule ^heatingsources/?$ /istochniki-tepla/ [R=301,L]
   RewriteRule ^uslugi/elektricheskiy-teplyy-pol/?$ /uslugi/ [R=301,L]
+  RewriteRule ^uslugi/dvuhkonturnaya-sistema/?$ /uslugi/goryachee-vodosnabzhenie/ [R=301,L]
 
   # Служебные адреса Tilda, если где-то остались внешние ссылки
   RewriteRule ^tilda/ / [R=301,L]
